@@ -1,0 +1,3 @@
+class tastcase02 {
+
+}
