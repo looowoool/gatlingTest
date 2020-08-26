@@ -5,7 +5,7 @@ import io.gatling.http.Predef._
 import io.gatling.jdbc.Predef._
 
 
-class EmptyObject extends Simulation{
+class EmptyObject {
 
   protected val base_url = "http://alpha.kujaie.com"
   protected val encoding_head = "gzip, deflate"
