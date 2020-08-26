@@ -66,4 +66,4 @@ gen
 *.log
 
 gatlingS.iml
-data/
+data/login_data.csv
