@@ -3,7 +3,7 @@ import objectcls.LoginObject
 
 
 
-class tastcase02 extends EmptyObject{
+class tastcase01 extends EmptyObject{
 
 
   /** *****设置场景 ******/
@@ -18,7 +18,7 @@ class tastcase02 extends EmptyObject{
 //  )
 
   setUp(
-    scn.inject(atOnceUsers(1))
+    scn.inject(rampUsers(1) over (1))
   ).protocols(httpConf)
 
 }

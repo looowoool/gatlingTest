@@ -66,3 +66,4 @@ gen
 *.log
 
 gatlingS.iml
+data/

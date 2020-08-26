@@ -1,9 +1,9 @@
-package object
+package objectcls
 
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 
-object LoginObject extends EmptyObject{
+object LoginObject{
 
 		val data = csv("data/login_data.csv").circular
 		val login = feed(data)
@@ -13,15 +13,17 @@ object LoginObject extends EmptyObject{
 //				.formParam("username", "${login_name}")
 //				.formParam("pwd", "${password}")
 				.body(StringBody("{\"account\":\"${username}\",\"pass\",\"${password}\"}")).asJSON
-				.check(status.is(status_ok))
+				.check(status.is(200))
+				.check(jsonPath("$.code").is("0"))//断言-业务响应码是否为0
+				.check(jsonPath("$.data").exists.saveAs("resp_login")) // 保存响应的data内容至session中
+				  .check(jsonPath("$.Set-Cookie").exists.saveAs("qunhe-jwt"))
+				.check(bodyString.saveAs("bodyString"))
 			).pause(2) //时间2s
-			.exec(session =>{
-				val header_value = session("Set-Cookie").as[String] //获取session中参数和对应值
-				val session_id = header_value.split("/")(1) //获取关联值处理
-				session.set("Get_session_id", session_id) //对session中添加一个新参数，并给新参数赋值
-			})//打印session信息
+			.exec(addCookie(Cookie("qunhe-jwt", "${qunhe-jwt}")))  // 为后续的请求设置cookie，key为ticket，value为从响应中获取的ticket值
+			// 打印session信息
 			.exec { session =>
-				println(session)
+				println("session:" + session)
+//				println("bodyString : " + session("bodyString").as[String])
 				session
 			}
 
